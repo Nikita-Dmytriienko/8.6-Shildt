@@ -1,31 +1,30 @@
 ﻿/*
-Разработайте программу для управления банковскими счетами.
- Создайте класс "Банковский счет" и производные классы для разных типов счетов (например, сберегательный, чековый).
- Используйте полиморфизм для реализации различных операций,
- таких как депозиты, снятия и переводы.
- Особенностью может быть использование виртуальных методов для обработки начисления процентов на сберегательном счете.
- */
+Develop a program for managing bank accounts.
+Create a class "Bank Account" and derived classes for different types of accounts (e.g., savings, checking).
+Use polymorphism to implement various operations such as deposits, withdrawals, and transfers.
+A feature can be the use of virtual methods for handling interest calculations on a savings account.
+*/
 #include <iostream>
 #include <string>
 
- // Базовый класс BankAccount для представления банковского счета
+// Base class BankAccount to represent a bank account
 class BankAccount {
 protected:
-    std::string accountNumber; // Номер счета
-    double balance; // Баланс
+    std::string accountNumber; // Account number
+    double balance; // Balance
 
 public:
-    // Конструктор класса BankAccount
+    // Constructor of the BankAccount class
     BankAccount(const std::string& accNumber, double initialBalance)
         : accountNumber(accNumber), balance(initialBalance) {}
 
-    // Виртуальная функция для внесения денег на счет
+    // Virtual function for depositing money into the account
     virtual void deposit(double amount) {
         balance += amount;
         std::cout << "Deposited: $" << amount << std::endl;
     }
 
-    // Виртуальная функция для снятия денег со счета
+    // Virtual function for withdrawing money from the account
     virtual void withdraw(double amount) {
         if (balance >= amount) {
             balance -= amount;
@@ -36,32 +35,32 @@ public:
         }
     }
 
-    // Виртуальная функция для отображения информации о счете
+    // Virtual function for displaying account information
     virtual void display() {
         std::cout << "Account Number: " << accountNumber << std::endl;
         std::cout << "Balance: $" << balance << std::endl;
     }
 
-    // Виртуальный деструктор
+    // Virtual destructor
     virtual ~BankAccount() {}
 };
 
-// Подкласс SavingsAccount, наследующийся от BankAccount
+// Subclass SavingsAccount, inheriting from BankAccount
 class SavingsAccount : public BankAccount {
-    double interestRate; // Процентная ставка
+    double interestRate; // Interest rate
 
 public:
-    // Конструктор класса SavingsAccount
+    // Constructor of the SavingsAccount class
     SavingsAccount(const std::string& accNumber, double initialBalance, double rate)
         : BankAccount(accNumber, initialBalance), interestRate(rate) {}
 
-    // Переопределенная функция deposit для сберегательного счета
+    // Overridden deposit function for a savings account
     void deposit(double amount) override {
-        BankAccount::deposit(amount); // Вызываем deposit из базового класса
-        calculateInterest(); // Вычисляем и начисляем проценты
+        BankAccount::deposit(amount); // Call the deposit method from the base class
+        calculateInterest(); // Calculate and add interest
     }
 
-    // Функция для вычисления и начисления процентов
+    // Function to calculate and add interest
     void calculateInterest() {
         double interest = balance * interestRate / 100;
         balance += interest;
@@ -69,16 +68,16 @@ public:
     }
 };
 
-// Подкласс CheckingAccount, наследующийся от BankAccount
+// Subclass CheckingAccount, inheriting from BankAccount
 class CheckingAccount : public BankAccount {
 public:
-    // Конструктор класса CheckingAccount
+    // Constructor of the CheckingAccount class
     CheckingAccount(const std::string& accNumber, double initialBalance)
         : BankAccount(accNumber, initialBalance) {}
 
-    // Переопределенная функция withdraw для счета CheckingAccount
+    // Overridden withdraw function for a CheckingAccount
     void withdraw(double amount) override {
-        BankAccount::withdraw(amount); // Вызываем withdraw из базового класса
+        BankAccount::withdraw(amount); // Call the withdraw method from the base class
         if (balance < 1000) {
             double fee = balance / 100;
             balance -= fee;
@@ -88,18 +87,18 @@ public:
 };
 
 int main() {
-    // Создаем объекты счетов
+    // Create account objects
     SavingsAccount savingsAccount("SAV123", 1000, 2.5);
     CheckingAccount checkingAccount("CHK456", 1500);
 
-    // Вносим и снимаем средства, выводим информацию о счетах
+    // Deposit and withdraw funds, display account information
     savingsAccount.deposit(500);
     savingsAccount.withdraw(200);
     savingsAccount.display();
     std::cout << std::endl;
 
-    checkingAccount.deposit(300);
-    checkingAccount.withdraw(1000);
+    checkingAccount.deposit(7853);
+    checkingAccount.withdraw(4500);
     checkingAccount.display();
     std::cout << std::endl;
 
