@@ -8,26 +8,26 @@ A feature can be the use of virtual methods for handling interest calculations o
 #include <string>
 
 // Base class BankAccount to represent a bank account
-class BankAccount {
+class bank_account {
 protected:
-    std::string accountNumber; // Account number
-    double balance; // Balance
+    std::string account_number_; // Account number
+    double balance_; // Balance
 
 public:
     // Constructor of the BankAccount class
-    BankAccount(const std::string& accNumber, double initialBalance)
-        : accountNumber(accNumber), balance(initialBalance) {}
+    bank_account(std::string acc_number, const double initial_balance)
+        : account_number_(std::move(acc_number)), balance_(initial_balance) {}
 
     // Virtual function for depositing money into the account
-    virtual void deposit(double amount) {
-        balance += amount;
+    virtual void deposit(const double amount) {
+        balance_ += amount;
         std::cout << "Deposited: $" << amount << "\n";
     }
 
     // Virtual function for withdrawing money from the account
-    virtual void withdraw(double amount) {
-        if (balance >= amount) {
-            balance -= amount;
+    virtual void withdraw(const double amount) {
+        if (balance_ >= amount) {
+            balance_ -= amount;
             std::cout << "Withdrawn: $" << amount << "\n";
         }
         else {
@@ -37,50 +37,50 @@ public:
 
     // Virtual function for displaying account information
     virtual void display() {
-        std::cout << "Account Number: " << accountNumber << "\n";
-        std::cout << "Balance: $" << balance << "\n";
+        std::cout << "Account Number: " << account_number_ << "\n";
+        std::cout << "Balance: $" << balance_ << "\n";
     }
 
     // Virtual destructor
-    virtual ~BankAccount() {}
+    virtual ~bank_account() = default;
 };
 
 // Subclass SavingsAccount, inheriting from BankAccount
-class SavingsAccount : public BankAccount {
-    double interestRate; // Interest rate
+class savings_account final : public bank_account {
+    double interest_rate_; // Interest rate
 
 public:
     // Constructor of the SavingsAccount class
-    SavingsAccount(const std::string& accNumber, double initialBalance, double rate)
-        : BankAccount(accNumber, initialBalance), interestRate(rate) {}
+    savings_account(const std::string& acc_number, const double initialBalance, const double rate)
+        : bank_account(acc_number, initialBalance), interest_rate_(rate) {}
 
     // Overridden deposit function for a savings account
-    void deposit(double amount) override {
-        BankAccount::deposit(amount); // Call the deposit method from the base class
-        calculateInterest(); // Calculate and add interest
+    void deposit(const double amount) override {
+        bank_account::deposit(amount); // Call the deposit method from the base class
+        calculate_interest(); // Calculate and add interest
     }
 
     // Function to calculate and add interest
-    void calculateInterest() {
-        double interest = balance * interestRate / 100;
-        balance += interest;
-        std::cout << "Interest added: $" << interest << std::endl;
+    void calculate_interest() {
+	    const double interest = balance_ * interest_rate_ / 100;
+        balance_ += interest;
+        std::cout << "Interest added: $" << interest << "\n";
     }
 };
 
 // Subclass CheckingAccount, inheriting from BankAccount
-class CheckingAccount : public BankAccount {
+class checking_account final : public bank_account {
 public:
     // Constructor of the CheckingAccount class
-    CheckingAccount(const std::string& accNumber, double initialBalance)
-        : BankAccount(accNumber, initialBalance) {}
+    checking_account(const std::string& acc_number, const double initial_balance)
+        : bank_account(acc_number, initial_balance) {}
 
     // Overridden withdraw function for a CheckingAccount
-    void withdraw(double amount) override {
-        BankAccount::withdraw(amount); // Call the withdraw method from the base class
-        if (balance < 1000) {
-            double fee = balance / 100;
-            balance -= fee;
+    void withdraw(const double amount) override {
+        bank_account::withdraw(amount); // Call the withdrawal method from the base class
+        if (balance_ < 1000) {
+	        const double fee = balance_ / 100;
+            balance_ -= fee;
             std::cout << "Service fee charged: $" << fee << "\n";
         }
     }
@@ -88,18 +88,18 @@ public:
 
 int main() {
     // Create account objects
-    SavingsAccount savingsAccount("SAV123", 1000, 2.5);
-    CheckingAccount checkingAccount("CHK456", 1500);
+    savings_account savings_account("SAV123", 1000, 2.5);
+    checking_account checking_account("CHK456", 1500);
 
     // Deposit and withdraw funds, display account information
-    savingsAccount.deposit(500);
-    savingsAccount.withdraw(200);
-    savingsAccount.display();
+    savings_account.deposit(500);
+    savings_account.withdraw(200);
+    savings_account.display();
     std::cout << "\n";
 
-    checkingAccount.deposit(7853);
-    checkingAccount.withdraw(4500);
-    checkingAccount.display();
+    checking_account.deposit(7853);
+    checking_account.withdraw(4500);
+    checking_account.display();
     std::cout << "\n";
 
     return 0;
