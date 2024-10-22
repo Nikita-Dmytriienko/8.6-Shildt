@@ -21,24 +21,24 @@ public:
     // Virtual function for depositing money into the account
     virtual void deposit(double amount) {
         balance += amount;
-        std::cout << "Deposited: $" << amount << std::endl;
+        std::cout << "Deposited: $" << amount << "\n";
     }
 
     // Virtual function for withdrawing money from the account
     virtual void withdraw(double amount) {
         if (balance >= amount) {
             balance -= amount;
-            std::cout << "Withdrawn: $" << amount << std::endl;
+            std::cout << "Withdrawn: $" << amount << "\n";
         }
         else {
-            std::cout << "Insufficient funds" << std::endl;
+            std::cout << "Insufficient funds" << "\n";
         }
     }
 
     // Virtual function for displaying account information
     virtual void display() {
-        std::cout << "Account Number: " << accountNumber << std::endl;
-        std::cout << "Balance: $" << balance << std::endl;
+        std::cout << "Account Number: " << accountNumber << "\n";
+        std::cout << "Balance: $" << balance << "\n";
     }
 
     // Virtual destructor
@@ -81,7 +81,7 @@ public:
         if (balance < 1000) {
             double fee = balance / 100;
             balance -= fee;
-            std::cout << "Service fee charged: $" << fee << std::endl;
+            std::cout << "Service fee charged: $" << fee << "\n";
         }
     }
 };
@@ -95,12 +95,12 @@ int main() {
     savingsAccount.deposit(500);
     savingsAccount.withdraw(200);
     savingsAccount.display();
-    std::cout << std::endl;
+    std::cout << "\n";
 
     checkingAccount.deposit(7853);
     checkingAccount.withdraw(4500);
     checkingAccount.display();
-    std::cout << std::endl;
+    std::cout << "\n";
 
     return 0;
 }
